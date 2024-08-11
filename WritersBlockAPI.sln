@@ -7,6 +7,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WritersBlockAPI", "src\Writ
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{AD2D896E-EE26-4418-97FF-01A22B55C755}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{C0AAA6C7-9F01-41DB-81BF-78E3EBDDDB09}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WritersBlockAPI.Tests", "test\WritersBlockAPI.Tests\WritersBlockAPI.Tests.csproj", "{39426F4F-4E51-4661-A040-36814431C228}"
+	ProjectSection(ProjectDependencies) = postProject
+		{584569B8-8CF6-4D16-9CE0-1AE5454689A1} = {584569B8-8CF6-4D16-9CE0-1AE5454689A1}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -17,12 +24,17 @@ Global
 		{584569B8-8CF6-4D16-9CE0-1AE5454689A1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{584569B8-8CF6-4D16-9CE0-1AE5454689A1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{584569B8-8CF6-4D16-9CE0-1AE5454689A1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{39426F4F-4E51-4661-A040-36814431C228}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{39426F4F-4E51-4661-A040-36814431C228}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{39426F4F-4E51-4661-A040-36814431C228}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{39426F4F-4E51-4661-A040-36814431C228}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{584569B8-8CF6-4D16-9CE0-1AE5454689A1} = {AD2D896E-EE26-4418-97FF-01A22B55C755}
+		{39426F4F-4E51-4661-A040-36814431C228} = {C0AAA6C7-9F01-41DB-81BF-78E3EBDDDB09}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {47FD231E-3B16-4CFC-8497-D3A88EDE3A1A}
