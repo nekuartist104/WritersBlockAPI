@@ -1,6 +1,6 @@
 ﻿namespace WritersBlockAPI.Controllers.Requests
 {
-    public class CreateWorldRequest
+    public class CreateAreaTypeRequest
     {
         public string Name { get; set; }
     }

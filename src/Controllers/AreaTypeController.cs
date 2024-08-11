@@ -1,5 +1,4 @@
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http.HttpResults;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
 using WritersBlockAPI.Controllers.Requests;
@@ -8,17 +7,19 @@ using WritersBlockAPI.Repositories;
 
 namespace WritersBlockAPI.Controllers
 {
+
     [ApiController]
     [Route("[controller]")]
-    public class WorldController : ControllerBase
+    public class AreaTypeController : ControllerBase
     {
-        private readonly ILogger<WorldController> _logger;
-        private readonly IWorldRepository _worldRepository;
 
-        public WorldController(ILogger<WorldController> logger, IWorldRepository worldRepository)
+        private readonly ILogger<AreaTypeController> _logger;
+        private readonly IAreaTypeRepository _areaTypeRepository;
+
+        public AreaTypeController(ILogger<AreaTypeController> logger, IAreaTypeRepository areaTypeRepository)
         {
             _logger = logger;
-            _worldRepository = worldRepository;
+            _areaTypeRepository = areaTypeRepository;
         }
 
         [HttpGet]
@@ -27,39 +28,26 @@ namespace WritersBlockAPI.Controllers
         [AllowAnonymous]
         public IActionResult Index()
         {
-            List<World> worlds = _worldRepository.All();
+            List<AreaType> areaTypes = _areaTypeRepository.All();
 
-            return new OkObjectResult(worlds);
+            return new OkObjectResult(areaTypes);
         }
 
         [HttpGet]
         [Produces("application/json")]
-        [AllowAnonymous]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [Route("{worldId}")]
-        public IActionResult Get(int worldId)
+        [AllowAnonymous]
+        [Route("{areaTypeId}")]
+        public IActionResult Get(int areaTypeId)
         {
-            World world = _worldRepository.Find(worldId);
-
-            if (world == null)
+            AreaType areaType = _areaTypeRepository.Find(areaTypeId);
+            if (areaType == null)
             {
                 return new NotFoundResult();
             }
 
-            return new OkObjectResult(world);
-        }
-
-        [HttpDelete]
-        [Produces("application/json")]
-        [AllowAnonymous]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [Route("{worldId}")]
-        public IActionResult Delete(int worldId)
-        {
-            _worldRepository.Destroy(worldId);
-
-            return new OkResult();
+            return new OkObjectResult(areaType);
         }
 
         [HttpPost]
@@ -68,24 +56,23 @@ namespace WritersBlockAPI.Controllers
         [ProducesResponseType(StatusCodes.Status409Conflict)]
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         [AllowAnonymous]
-        public IActionResult Create(CreateWorldRequest createWorldRequest)
+        public IActionResult Create(CreateAreaTypeRequest createAreaTypeRequest)
         {
             try
             {
-                _worldRepository.Create(createWorldRequest);
+                _areaTypeRepository.Create(createAreaTypeRequest);
             }
             catch (SqlException ex)
             {
                 if (ex.Number == 2627)
                 {
                     // Hit unique constraint
-                    return new ConflictObjectResult($"World with name {createWorldRequest.Name} already exists");
+                    return new ConflictObjectResult($"Area type with name {createAreaTypeRequest.Name} already exists");
                 }
-
                 if (ex.Number == 2628)
                 {
                     // name too long
-                    return new UnprocessableEntityObjectResult($"Name {createWorldRequest.Name} is too long");
+                    return new UnprocessableEntityObjectResult($"Name {createAreaTypeRequest.Name} is too long");
                 }
 
                 throw;
@@ -93,5 +80,19 @@ namespace WritersBlockAPI.Controllers
 
             return new CreatedResult();
         }
+
+        [HttpDelete]
+        [Produces("application/json")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [AllowAnonymous]
+        [Route("{areaTypeId}")]
+
+        public IActionResult Delete(int areaTypeId)
+        {
+            _areaTypeRepository.Destroy(areaTypeId);
+            return new OkResult();
+        }
+
+
     }
 }

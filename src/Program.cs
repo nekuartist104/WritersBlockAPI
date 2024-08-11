@@ -9,6 +9,8 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddTransient<IWorldRepository, WorldRepository>();
+builder.Services.AddTransient<IAreaTypeRepository, AreaTypeRepository>();
+builder.Services.AddTransient<ILocationRepository, LocationRepository>();
 
 var app = builder.Build();
 
