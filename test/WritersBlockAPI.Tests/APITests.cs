@@ -57,6 +57,10 @@ namespace WritersBlockAPI.Tests
 
             Assert.NotNull(world);
             Assert.Equal(worldName, world.Name);
+
+            // 4) Delete world by id 
+            var deleteWorldHttpResponse = await _httpClient.DeleteAsync($"{_baseAddress}/World/{myWorld.WorldId}");
+            Assert.True(deleteWorldHttpResponse.IsSuccessStatusCode);
         }
 
         [Fact]
@@ -179,6 +183,10 @@ namespace WritersBlockAPI.Tests
             var createLocationHttpResponse = await _httpClient.PostAsync($"{_baseAddress}/Location", locationHttpContent);
             // Check that name of location created is too long
             Assert.Equal(HttpStatusCode.UnprocessableEntity, createLocationHttpResponse.StatusCode);
+
+            // Delete world by id
+            var deleteWorldHttpResponse = await _httpClient.DeleteAsync($"{_baseAddress}/World/{myWorld.WorldId}");
+            Assert.True(deleteWorldHttpResponse.IsSuccessStatusCode);
         }
 
         [Fact]
@@ -223,6 +231,10 @@ namespace WritersBlockAPI.Tests
             var createLocationHttpResponse = await _httpClient.PostAsync($"{_baseAddress}/Location", locationHttpContent);
             // Check that name of location created is too long
             Assert.Equal(HttpStatusCode.UnprocessableEntity, createLocationHttpResponse.StatusCode);
+
+            // Delete world by id
+            var deleteWorldHttpResponse = await _httpClient.DeleteAsync($"{_baseAddress}/World/{myWorld.WorldId}");
+            Assert.True(deleteWorldHttpResponse.IsSuccessStatusCode);
         }
 
         [Fact]
@@ -267,6 +279,10 @@ namespace WritersBlockAPI.Tests
             var createLocationHttpResponse = await _httpClient.PostAsync($"{_baseAddress}/Location", locationHttpContent);
             // Check that name of location created is too long
             Assert.Equal(HttpStatusCode.UnprocessableEntity, createLocationHttpResponse.StatusCode);
+
+            // Delete world by id
+            var deleteWorldHttpResponse = await _httpClient.DeleteAsync($"{_baseAddress}/World/{myWorld.WorldId}");
+            Assert.True(deleteWorldHttpResponse.IsSuccessStatusCode);
         }
 
         [Fact]
@@ -311,6 +327,10 @@ namespace WritersBlockAPI.Tests
             var createLocationHttpResponse = await _httpClient.PostAsync($"{_baseAddress}/Location", locationHttpContent);
             // Check that name of location created is too long
             Assert.Equal(HttpStatusCode.UnprocessableEntity, createLocationHttpResponse.StatusCode);
+
+            // Delete world by id
+            var deleteWorldHttpResponse = await _httpClient.DeleteAsync($"{_baseAddress}/World/{myWorld.WorldId}");
+            Assert.True(deleteWorldHttpResponse.IsSuccessStatusCode);
         }
 
         [Fact]
@@ -381,6 +401,12 @@ namespace WritersBlockAPI.Tests
 
             // 5) Check myLocation name is equal to returned locations name
             Assert.Equal(locationName, location.Name);
+
+            // 6) Delete location and world by id 
+            var deleteLocationHttpResponse = await _httpClient.DeleteAsync($"{_baseAddress}/Location/{myLocation.LocationId}");
+            Assert.True(deleteLocationHttpResponse.IsSuccessStatusCode);
+            var deleteWorldHttpResponse = await _httpClient.DeleteAsync($"{_baseAddress}/World/{myWorld.WorldId}");
+            Assert.True(deleteWorldHttpResponse.IsSuccessStatusCode);
         }
 
         [Fact]
@@ -459,6 +485,10 @@ namespace WritersBlockAPI.Tests
             // 7) Check location no longer exists
             var getDeletedLocationHttpResponse = await _httpClient.GetAsync($"{_baseAddress}/Location/{myLocation.LocationId}");
             Assert.Equal(HttpStatusCode.NotFound, getDeletedLocationHttpResponse.StatusCode);
+
+            // 8) Delete world by id
+            var deleteWorldHttpResponse = await _httpClient.DeleteAsync($"{_baseAddress}/World/{myWorld.WorldId}");
+            Assert.True(deleteWorldHttpResponse.IsSuccessStatusCode);
         }
 
         [Fact]
@@ -530,6 +560,10 @@ namespace WritersBlockAPI.Tests
             // 4) Check areaType is not null, and that areaTypeName and areaType name are equal
             Assert.NotNull(areaType);
             Assert.Equal(areaTypeName, areaTypeName);
+
+            // 5) Delete area type by id 
+            var deleteAreaTypeHttpResponse = await _httpClient.DeleteAsync($"{_baseAddress}/AreaType/{myAreaType.AreaTypeId}");
+            Assert.True(deleteAreaTypeHttpResponse.IsSuccessStatusCode);
         }
 
         [Fact]
@@ -714,8 +748,19 @@ namespace WritersBlockAPI.Tests
             var getAreaHttpResponseBody = await getAreaHttpResponse.Content.ReadAsStringAsync();
             Area area = JsonConvert.DeserializeObject<Area>(getAreaHttpResponseBody);
 
+            // 6) Check myArea name is equal to returned areas name
             Assert.NotNull(area);
             Assert.Equal(areaName, area.Name);
+
+            // 7) Delete world, location, area type and area by id 
+            var deleteAreaHttpResponse = await _httpClient.DeleteAsync($"{_baseAddress}/Area/{myArea.AreaId}");
+            Assert.True(deleteAreaHttpResponse.IsSuccessStatusCode);
+            var deleteAreaTypeHttpResponse = await _httpClient.DeleteAsync($"{_baseAddress}/AreaType/{myAreaType.AreaTypeId}");
+            Assert.True(deleteAreaTypeHttpResponse.IsSuccessStatusCode);
+            var deleteLocationHttpResponse = await _httpClient.DeleteAsync($"{_baseAddress}/Location/{myLocation.LocationId}");
+            Assert.True(deleteLocationHttpResponse.IsSuccessStatusCode);
+            var deleteWorldHttpResponse = await _httpClient.DeleteAsync($"{_baseAddress}/World/{myWorld.WorldId}");
+            Assert.True(deleteWorldHttpResponse.IsSuccessStatusCode);
         }
 
         [Fact]
@@ -829,6 +874,14 @@ namespace WritersBlockAPI.Tests
             // 7) Get area by id and check that it no longer exists
             var getDeletedAreaHttpResponse = await _httpClient.GetAsync($"{_baseAddress}/Area/{myArea.AreaId}");
             Assert.Equal(HttpStatusCode.NotFound, getDeletedAreaHttpResponse.StatusCode);
+
+            // 8) Delete world, location and area type by id
+            var deleteAreaTypeHttpResponse = await _httpClient.DeleteAsync($"{_baseAddress}/AreaType/{myAreaType.AreaTypeId}");
+            Assert.True(deleteAreaTypeHttpResponse.IsSuccessStatusCode);
+            var deleteLocationHttpResponse = await _httpClient.DeleteAsync($"{_baseAddress}/Location/{myLocation.LocationId}");
+            Assert.True(deleteLocationHttpResponse.IsSuccessStatusCode);
+            var deleteWorldHttpResponse = await _httpClient.DeleteAsync($"{_baseAddress}/World/{myWorld.WorldId}");
+            Assert.True(deleteWorldHttpResponse.IsSuccessStatusCode);
         }
 
 
@@ -917,6 +970,14 @@ namespace WritersBlockAPI.Tests
             var areaHttpContent = new StringContent(areaJsonBody, Encoding.UTF8, "application/json");
             var createAreaHttpResponse = await _httpClient.PostAsync($"{_baseAddress}/Area", areaHttpContent);
             Assert.Equal(HttpStatusCode.UnprocessableEntity, createAreaHttpResponse.StatusCode);
+
+            // 5) Delete world, location and area type by id
+            var deleteAreaTypeHttpResponse = await _httpClient.DeleteAsync($"{_baseAddress}/AreaType/{myAreaType.AreaTypeId}");
+            Assert.True(deleteAreaTypeHttpResponse.IsSuccessStatusCode);
+            var deleteLocationHttpResponse = await _httpClient.DeleteAsync($"{_baseAddress}/Location/{myLocation.LocationId}");
+            Assert.True(deleteLocationHttpResponse.IsSuccessStatusCode);
+            var deleteWorldHttpResponse = await _httpClient.DeleteAsync($"{_baseAddress}/World/{myWorld.WorldId}");
+            Assert.True(deleteWorldHttpResponse.IsSuccessStatusCode);
         }
 
         [Fact]
@@ -957,6 +1018,10 @@ namespace WritersBlockAPI.Tests
             var areaHttpContent = new StringContent(areaJsonBody, Encoding.UTF8, "application/json");
             var createAreaHttpResponse = await _httpClient.PostAsync($"{_baseAddress}/Area", areaHttpContent);
             Assert.Equal(HttpStatusCode.NotFound, createAreaHttpResponse.StatusCode);
+
+            // 3) Delete area type by id
+            var deleteAreaTypeHttpResponse = await _httpClient.DeleteAsync($"{_baseAddress}/AreaType/{myAreaType.AreaTypeId}");
+            Assert.True(deleteAreaTypeHttpResponse.IsSuccessStatusCode);
         }
 
         [Fact]
@@ -1023,6 +1088,12 @@ namespace WritersBlockAPI.Tests
             var areaHttpContent = new StringContent(areaJsonBody, Encoding.UTF8, "application/json");
             var createAreaHttpResponse = await _httpClient.PostAsync($"{_baseAddress}/Area", areaHttpContent);
             Assert.Equal(HttpStatusCode.NotFound, createAreaHttpResponse.StatusCode);
+
+            // 5) Delete world and location by id
+            var deleteLocationHttpResponse = await _httpClient.DeleteAsync($"{_baseAddress}/Location/{myLocation.LocationId}");
+            Assert.True(deleteLocationHttpResponse.IsSuccessStatusCode);
+            var deleteWorldHttpResponse = await _httpClient.DeleteAsync($"{_baseAddress}/World/{myWorld.WorldId}");
+            Assert.True(deleteWorldHttpResponse.IsSuccessStatusCode);
         }
 
         [Fact]
