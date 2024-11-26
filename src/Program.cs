@@ -11,6 +11,8 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddTransient<IWorldRepository, WorldRepository>();
 builder.Services.AddTransient<IAreaTypeRepository, AreaTypeRepository>();
 builder.Services.AddTransient<ILocationRepository, LocationRepository>();
+builder.Services.AddTransient<IAreaRepository, AreaRepository>();
+
 
 var app = builder.Build();
 

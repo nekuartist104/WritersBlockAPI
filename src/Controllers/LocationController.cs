@@ -93,11 +93,31 @@ namespace WritersBlockAPI.Controllers
                         return new ConflictObjectResult($"Location with name {createLocationRequest.Name} already exists");
 
                     case 2628:
-                        // name too long
-                        return new UnprocessableEntityObjectResult($"Name {createLocationRequest.Name} is too long");
+                        //name too long
+                        string error = ex.Message;
+                        if (error.Contains("Name"))
+                        {
+                            return new UnprocessableEntityObjectResult($"Name {createLocationRequest.Name} is too long");
+                        }
+                        if (error.Contains("Nationality"))
+                        {
+                            return new UnprocessableEntityObjectResult($"Nationality {createLocationRequest.Nationality} is too long");
+                        }
+                        if (error.Contains("Climate"))
+                        {
+                            return new UnprocessableEntityObjectResult($"Climate {createLocationRequest.Climate} is too long");
+                        }
+                        if (error.Contains("Terrain"))
+                        {
+                            return new UnprocessableEntityObjectResult($"Terrain {createLocationRequest.Terrain} is too long");
+                        }
+                        else
+                        {
+                            return new UnprocessableEntityObjectResult($"Something went wrong somewhere");
+                        }
 
                     case 547:
-                        // World not found with specified worldId
+                        //World not found with specified worldId
                         return new NotFoundObjectResult($"World with Id {createLocationRequest.WorldId} does not exist");
 
                     default:

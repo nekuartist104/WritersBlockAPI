@@ -76,20 +76,20 @@ namespace WritersBlockAPI.Controllers
             }
             catch (SqlException ex)
             {
-                if (ex.Number == 2627)
+                switch (ex.Number)
                 {
-                    // Hit unique constraint
-                    return new ConflictObjectResult($"World with name {createWorldRequest.Name} already exists");
-                }
+                    case 2627:
+                        // Hit unique constraint
+                        return new ConflictObjectResult($"World with name {createWorldRequest.Name} already exists");
 
-                if (ex.Number == 2628)
-                {
-                    // name too long
-                    return new UnprocessableEntityObjectResult($"Name {createWorldRequest.Name} is too long");
-                }
+                    case 2628:
+                        // name too long
+                        return new UnprocessableEntityObjectResult($"Name {createWorldRequest.Name} is too long");
 
-                throw;
-            }
+                    default:
+                        throw;
+                    }
+                }
 
             return new CreatedResult();
         }

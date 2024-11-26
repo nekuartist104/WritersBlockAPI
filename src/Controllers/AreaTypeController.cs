@@ -64,18 +64,19 @@ namespace WritersBlockAPI.Controllers
             }
             catch (SqlException ex)
             {
-                if (ex.Number == 2627)
+                switch (ex.Number)
                 {
+                    case 2627:
                     // Hit unique constraint
                     return new ConflictObjectResult($"Area type with name {createAreaTypeRequest.Name} already exists");
-                }
-                if (ex.Number == 2628)
-                {
+
+                    case 2628:
                     // name too long
                     return new UnprocessableEntityObjectResult($"Name {createAreaTypeRequest.Name} is too long");
-                }
 
-                throw;
+                    default:
+                        throw;
+                }
             }
 
             return new CreatedResult();
@@ -92,7 +93,5 @@ namespace WritersBlockAPI.Controllers
             _areaTypeRepository.Destroy(areaTypeId);
             return new OkResult();
         }
-
-
     }
 }
