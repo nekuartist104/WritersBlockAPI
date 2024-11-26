@@ -748,7 +748,7 @@ namespace WritersBlockAPI.Tests
             {
                 WorldId = myWorld.WorldId,
                 Name = locationName,
-                Nationality = "natuionality",
+                Nationality = "nationality",
                 Population = 1,
                 Climate = "climate",
                 Terrain = "terrain"
@@ -862,7 +862,7 @@ namespace WritersBlockAPI.Tests
             {
                 WorldId = myWorld.WorldId,
                 Name = locationName,
-                Nationality = "natuionality",
+                Nationality = "nationality",
                 Population = 1,
                 Climate = "climate",
                 Terrain = "terrain"
@@ -989,7 +989,7 @@ namespace WritersBlockAPI.Tests
             {
                 WorldId = myWorld.WorldId,
                 Name = locationName,
-                Nationality = "natuionality",
+                Nationality = "nationality",
                 Population = 1,
                 Climate = "climate",
                 Terrain = "terrain"

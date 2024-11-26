@@ -48,43 +48,50 @@ namespace WritersBlockAPI.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         public IActionResult Create(CreateAreaRequest createAreaRequest)
         {
-            try
+            if (createAreaRequest.Size >= 0)
             {
-                _areaRepository.Create(createAreaRequest);
-            }
-            catch (SqlException ex)
-            {
-                switch (ex.Number)
+                try
                 {
-                    case 2627:
-                        //Hit unique constraint
-                        return new ConflictObjectResult($"Area with name {createAreaRequest.Name} already exists");
-
-                    case 2628:
-                        //name too long
-                        return new UnprocessableEntityObjectResult($"Name {createAreaRequest.Name} is too long");
-
-                    case 547:
-                        //Location or AreaType not found with specified locationId or areaTypeId
-                        if (ex.Message.Contains("LocationId"))
-                        {
-                            return new NotFoundObjectResult($"Location with Id {createAreaRequest.LocationId} doesn't exist");
-                        }
-
-                        else if (ex.Message.Contains("AreaTypeId"))
-                        {
-                            return new NotFoundObjectResult($"Area type with Id {createAreaRequest.AreaTypeId} doesn't exist");
-
-                        }
-
-                        else
-                        {
-                            return new NotFoundObjectResult("Something went wrong somewhere");
-                        }
-
-                    default:
-                        throw;
+                    _areaRepository.Create(createAreaRequest);
                 }
+                catch (SqlException ex)
+                {
+                    switch (ex.Number)
+                    {
+                        case 2627:
+                            //Hit unique constraint
+                            return new ConflictObjectResult($"Area with name {createAreaRequest.Name} already exists");
+
+                        case 2628:
+                            //name too long
+                            return new UnprocessableEntityObjectResult($"Name {createAreaRequest.Name} is too long");
+
+                        case 547:
+                            //Location or AreaType not found with specified locationId or areaTypeId
+                            if (ex.Message.Contains("LocationId"))
+                            {
+                                return new NotFoundObjectResult($"Location with Id {createAreaRequest.LocationId} doesn't exist");
+                            }
+
+                            else if (ex.Message.Contains("AreaTypeId"))
+                            {
+                                return new NotFoundObjectResult($"Area type with Id {createAreaRequest.AreaTypeId} doesn't exist");
+
+                            }
+
+                            else
+                            {
+                                return new NotFoundObjectResult("Something went wrong somewhere");
+                            }
+
+                        default:
+                            throw;
+                    }
+                }
+            }
+            else
+            {
+                return new BadRequestObjectResult($"Size {createAreaRequest.Size} is invalid");
             }
 
             return new CreatedResult();

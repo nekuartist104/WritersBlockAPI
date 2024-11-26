@@ -80,49 +80,56 @@ namespace WritersBlockAPI.Controllers
         [AllowAnonymous]
         public IActionResult Create(CreateLocationRequest createLocationRequest)
         {
-            try
+            if (createLocationRequest.Population >= 0)
             {
-                _locationRepository.Create(createLocationRequest);
-            }
-            catch (SqlException ex)
-            {
-                switch (ex.Number)
+                try
                 {
-                    case 2627:
-                        //Hit unique constraint
-                        return new ConflictObjectResult($"Location with name {createLocationRequest.Name} already exists");
-
-                    case 2628:
-                        //name too long
-                        string error = ex.Message;
-                        if (error.Contains("Name"))
-                        {
-                            return new UnprocessableEntityObjectResult($"Name {createLocationRequest.Name} is too long");
-                        }
-                        if (error.Contains("Nationality"))
-                        {
-                            return new UnprocessableEntityObjectResult($"Nationality {createLocationRequest.Nationality} is too long");
-                        }
-                        if (error.Contains("Climate"))
-                        {
-                            return new UnprocessableEntityObjectResult($"Climate {createLocationRequest.Climate} is too long");
-                        }
-                        if (error.Contains("Terrain"))
-                        {
-                            return new UnprocessableEntityObjectResult($"Terrain {createLocationRequest.Terrain} is too long");
-                        }
-                        else
-                        {
-                            return new UnprocessableEntityObjectResult($"Something went wrong somewhere");
-                        }
-
-                    case 547:
-                        //World not found with specified worldId
-                        return new NotFoundObjectResult($"World with Id {createLocationRequest.WorldId} does not exist");
-
-                    default:
-                        throw;
+                    _locationRepository.Create(createLocationRequest);
                 }
+                catch (SqlException ex)
+                {
+                    switch (ex.Number)
+                    {
+                        case 2627:
+                            //Hit unique constraint
+                            return new ConflictObjectResult($"Location with name {createLocationRequest.Name} already exists");
+
+                        case 2628:
+                            //name too long
+                            string error = ex.Message;
+                            if (error.Contains("Name"))
+                            {
+                                return new UnprocessableEntityObjectResult($"Name {createLocationRequest.Name} is too long");
+                            }
+                            if (error.Contains("Nationality"))
+                            {
+                                return new UnprocessableEntityObjectResult($"Nationality {createLocationRequest.Nationality} is too long");
+                            }
+                            if (error.Contains("Climate"))
+                            {
+                                return new UnprocessableEntityObjectResult($"Climate {createLocationRequest.Climate} is too long");
+                            }
+                            if (error.Contains("Terrain"))
+                            {
+                                return new UnprocessableEntityObjectResult($"Terrain {createLocationRequest.Terrain} is too long");
+                            }
+                            else
+                            {
+                                return new UnprocessableEntityObjectResult($"Something went wrong somewhere");
+                            }
+
+                        case 547:
+                            //World not found with specified worldId
+                            return new NotFoundObjectResult($"World with Id {createLocationRequest.WorldId} does not exist");
+
+                        default:
+                            throw;
+                    }
+                }
+            }
+            else
+            {
+                return new BadRequestObjectResult($"Population {createLocationRequest.Population} is invalid");
             }
 
             return new CreatedResult();
